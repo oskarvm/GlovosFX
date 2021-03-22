@@ -39,6 +39,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         globo = new Globo(new Image("images/globo.png"));
+
         gc = mainCanvas.getGraphicsContext2D();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
