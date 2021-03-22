@@ -23,6 +23,18 @@ public class Controller implements Initializable {
     private GraphicsContext gc;
     private Globo globo;
     private Globo globo2;
+    Image image1 = new Image("css/images/globo_verde.png");
+    Image image2 = new Image("css/images/globo_azul.png");
+    Image image3 = new Image("css/images/globo_rojo.png");
+    Image image4 = new Image("css/images/globo_negro_grande.png");
+    Image image5 = new Image("css/images/globo_blanco.png");
+    Image image6 = new Image("css/images/globo_verde_grande.png");
+    Image image7 = new Image("css/images/globo_azul_grande.png");
+    Image image8 = new Image("css/images/globo_rojo_grande.png");
+    Image image9 = new Image("css/images/globo_negro_grande.png");
+    Image image0 = new Image("css/images/globo_blanco_grande.png");
+
+    private Image[] images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image0};
 
     @FXML
     Canvas mainCanvas;
@@ -45,8 +57,8 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        globo = new Globo(new Image("css/images/globo_verde_grande.png"));
-        globo2 = new Globo(new Image("css/images/globo_azul.png"));
+
+        globo = new Globo(images[1]);
 
 
         gc = mainCanvas.getGraphicsContext2D();

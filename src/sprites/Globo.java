@@ -37,7 +37,7 @@ public class Globo extends Sprite {
             setY(getPosY() - velY);
             if(getPosY() <= 0) {
                 dirY = (-1)*dirY;
-level++;
+                level++;
             }
             System.out.println(level);
         }
