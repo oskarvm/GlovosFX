@@ -1,0 +1,5 @@
+#fondo{
+    -fx-background-image: url("images/fondo_cielo.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
