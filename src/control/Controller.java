@@ -47,25 +47,35 @@ public class Controller implements Initializable {
     @FXML
     Canvas mainCanvas;
 
-    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.0017), new EventHandler<ActionEvent>(){
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.0037), new EventHandler<ActionEvent>(){
         @Override
         public void handle(ActionEvent event) {
+            segundos += 0.0037;
 
             for (Globo globo: arrayGlobos ){
                 globo.clear(gc);
                 globo.move();
                 globo.render(gc);
+                if (globo.getPosY()-1 == 0){
+                    globo.eliminar = true;
+                }
             }
 
-            segundos += 0.0017;
+
 
             if (segundos>creador_globo){
                 arrayGlobos.add(new Globo(images[3]));
-                creador_globo+=5;
+                creador_globo+=0.5F;
             }
+
+            for (Globo globo: arrayGlobos ){
+                if (globo.eliminar){
+                    globo.clear(gc);
+                }
+            }
+            arrayGlobos.removeIf(globo -> globo.eliminar);
         }
-    })
-    );
+    }));
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -3,15 +3,15 @@ package sprites;
 import javafx.scene.image.Image;
 
 public class Globo extends Sprite {
-    private double velX, velY;
-    private int dirX, dirY;
-    private int level;
+    public double velX, velY;
+    public int dirX, dirY;
+    public int level;
+    public boolean eliminar = false;
 
     public Globo(Image image) {
         super(image);
         setX(Math.random()*600);
-//        setX(300); //Eje horizontal
-        setY(0);  //Eje vertical
+        setY(400);  //Eje vertical
         this.velX = 1.0f;
         this.velY = 0.5f;
         this.dirX = 1;
@@ -41,6 +41,4 @@ public class Globo extends Sprite {
             }
         }
     }
-
-
 }
