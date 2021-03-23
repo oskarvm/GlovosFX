@@ -13,10 +13,6 @@ public abstract class Sprite {
         return;
     }
 
-    public void move(String dir) {
-        return;
-    }
-
     public Sprite(Image image) {
         setImage(image);
     }
@@ -27,17 +23,8 @@ public abstract class Sprite {
     public void setY(double y) {
         posY = y;
     }
-    public double getPosX() {
-        return posX;
-    }
     public double getPosY() {
         return posY;
-    }
-    public double getWidth() {
-        return width;
-    }
-    public double getHeight() {
-        return height;
     }
 
     private void setImage(Image image) {

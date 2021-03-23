@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -14,21 +15,30 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import sprites.Globo;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     private Scene scene;
     private Stage stage;
+    private Scene sceneGameOver;
+    private Stage stageGameOver;
     private GraphicsContext gc;
-    private Globo globo;
-    private Globo globo2;
+    private int globosperdidos=0;
 
     List<Globo> arrayGlobos = new ArrayList<>();
 
+    private float segundos = 0;
+    private float creador_globo = 5;
+    @FXML
+    Canvas mainCanvas;
 
+    Image image;
+    Image image0 = new Image("css/images/globo_blanco_grande.png");
     Image image1 = new Image("css/images/globo_verde.png");
     Image image2 = new Image("css/images/globo_azul.png");
     Image image3 = new Image("css/images/globo_rojo.png");
@@ -38,14 +48,6 @@ public class Controller implements Initializable {
     Image image7 = new Image("css/images/globo_azul_grande.png");
     Image image8 = new Image("css/images/globo_rojo_grande.png");
     Image image9 = new Image("css/images/globo_negro_grande.png");
-    Image image0 = new Image("css/images/globo_blanco_grande.png");
-
-    private Image[] images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image0};
-
-    private float segundos = 0;
-    private float creador_globo = 5;
-    @FXML
-    Canvas mainCanvas;
 
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.0037), new EventHandler<ActionEvent>(){
         @Override
@@ -57,31 +59,56 @@ public class Controller implements Initializable {
                 globo.move();
                 globo.render(gc);
                 if (globo.getPosY()-1 == 0){
-                    globo.eliminar = true;
+                    globo.eliminarAltura = true;
                 }
             }
 
 
-
+            //CREAR NUEVO GLOBO
             if (segundos>creador_globo){
-                arrayGlobos.add(new Globo(images[3]));
+                establecer_globo();
+
+                arrayGlobos.add(new Globo(image));
                 creador_globo+=0.5F;
             }
-
+            //ELIMINAR GLOBOS (TRUE)
             for (Globo globo: arrayGlobos ){
-                if (globo.eliminar){
+                if (globo.eliminarAltura){
+                    globo.clear(gc);
+                    globosperdidos++;
+                }
+                if (globo.eliminarConClick){
                     globo.clear(gc);
                 }
             }
-            arrayGlobos.removeIf(globo -> globo.eliminar);
+
+            arrayGlobos.removeIf(globo -> globo.eliminarAltura);
+            arrayGlobos.removeIf(globo -> globo.eliminarConClick);
+
+            if (globosperdidos == 30){
+                System.out.println("GAME OVER");
+                //TODO:navegar al game over
+//                FXMLLoader fxmlLoader = new FXMLLoader();
+//                fxmlLoader.setLocation(getClass().getResource("../sample/gameover.fxml"));
+//                try {
+//                    sceneGameOver = new Scene(fxmlLoader.load());
+//                    stageGameOver = new Stage();
+//
+//                    stageGameOver.setTitle("GAME OVER");
+//                    stageGameOver.setScene(sceneGameOver);
+//                    stageGameOver.show();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+            }
         }
     }));
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        arrayGlobos.add(new Globo(images[1]));
-
+        establecer_globo();
+        arrayGlobos.add(new Globo(image));
 
         gc = mainCanvas.getGraphicsContext2D();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -96,4 +123,33 @@ public class Controller implements Initializable {
     public void setStage(Stage primaryStage) {
         this.stage = primaryStage;
     }
+
+    private void establecer_globo() {
+        Random random = new Random();
+        int color = random.nextInt(8);
+
+        if (color == 0) {
+            image = image0;
+        } else if (color == 1) {
+            image = image1;
+        } else if (color == 2) {
+            image = image2;
+        } else if (color == 3) {
+            image = image3;
+        } else if (color == 4) {
+            image = image4;
+        } else if (color == 5) {
+            image = image5;
+        } else if (color == 6) {
+            image = image6;
+        } else if (color == 7) {
+            image = image7;
+        } else if (color == 8) {
+            image = image8;
+        } else {
+            image = image9;
+        }
+    }
+
+
 }
