@@ -15,6 +15,8 @@ import javafx.util.Duration;
 import sprites.Globo;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -23,6 +25,10 @@ public class Controller implements Initializable {
     private GraphicsContext gc;
     private Globo globo;
     private Globo globo2;
+
+    List<Globo> arrayGlobos = new ArrayList<>();
+
+
     Image image1 = new Image("css/images/globo_verde.png");
     Image image2 = new Image("css/images/globo_azul.png");
     Image image3 = new Image("css/images/globo_rojo.png");
@@ -36,21 +42,27 @@ public class Controller implements Initializable {
 
     private Image[] images = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image0};
 
+    private float segundos = 0;
+    private float creador_globo = 5;
     @FXML
     Canvas mainCanvas;
 
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.0017), new EventHandler<ActionEvent>(){
         @Override
         public void handle(ActionEvent event) {
-            globo.clear(gc);
-            globo.move();
-            globo.render(gc);
 
-            globo2.clear(gc);
-            globo2.move();
-            globo2.render(gc);
+            for (Globo globo: arrayGlobos ){
+                globo.clear(gc);
+                globo.move();
+                globo.render(gc);
+            }
 
+            segundos += 0.0017;
 
+            if (segundos>creador_globo){
+                arrayGlobos.add(new Globo(images[3]));
+                creador_globo+=5;
+            }
         }
     })
     );
@@ -58,7 +70,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        globo = new Globo(images[1]);
+        arrayGlobos.add(new Globo(images[1]));
 
 
         gc = mainCanvas.getGraphicsContext2D();

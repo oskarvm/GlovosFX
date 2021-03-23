@@ -9,8 +9,8 @@ public class Globo extends Sprite {
 
     public Globo(Image image) {
         super(image);
-        //setX(Math.random()*600);
-        setX(300); //Eje horizontal
+        setX(Math.random()*600);
+//        setX(300); //Eje horizontal
         setY(0);  //Eje vertical
         this.velX = 1.0f;
         this.velY = 0.5f;
@@ -39,7 +39,6 @@ public class Globo extends Sprite {
                 dirY = (-1)*dirY;
                 level++;
             }
-            System.out.println(level);
         }
     }
 
