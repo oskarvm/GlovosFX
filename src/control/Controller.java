@@ -36,6 +36,7 @@ public class Controller implements Initializable {
 
     private float segundos = 0;
     private float creador_globo = 5;
+    private int contador = 0;
     @FXML
     Canvas mainCanvas;
 
@@ -65,19 +66,6 @@ public class Controller implements Initializable {
             }
 
             comprovarSiGloboEsClickado();
-            scene.setOnMouseClicked(
-                    new EventHandler<MouseEvent>()
-                    {
-                        public void handle(MouseEvent e)
-                        {
-
-                            for (Globo globo:arrayGlobos){
-                                if ( globo.isClicked(new Point2D(e.getX(), e.getY()))){
-                                    globo.eliminarConClick = true;
-                                }
-                            }
-                        }
-                    });
 
             //MOVER GLOBOS HACIA ARRIBA
             for (Globo globo: arrayGlobos ){
@@ -114,26 +102,28 @@ public class Controller implements Initializable {
             arrayGlobos.removeIf(globo -> globo.eliminarAltura);
             arrayGlobos.removeIf(globo -> globo.eliminarConClick);
 
-            if (globosperdidos == 30){
-                System.out.println("GAME OVER");
-                //TODO:navegar al game over
-//                FXMLLoader fxmlLoader = new FXMLLoader();
-//                fxmlLoader.setLocation(getClass().getResource("../sample/gameover.fxml"));
-//                try {
-//                    sceneGameOver = new Scene(fxmlLoader.load());
-//                    stageGameOver = new Stage();
-//
-//                    stageGameOver.setTitle("GAME OVER");
-//                    stageGameOver.setScene(sceneGameOver);
-//                    stageGameOver.show();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-            }
+            //GAME OVER
+
+            //PRINTAR RESULTAT
+
         }
     }));
 
     private void comprovarSiGloboEsClickado() {
+        scene.setOnMouseClicked(
+                new EventHandler<MouseEvent>()
+                {
+                    public void handle(MouseEvent e)
+                    {
+
+                        for (Globo globo:arrayGlobos){
+                            if ( globo.isClicked(new Point2D(e.getX(), e.getY()))){
+                                globo.eliminarConClick = true;
+                                contador++;
+                            }
+                        }
+                    }
+                });
 
     }
 
