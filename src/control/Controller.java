@@ -35,8 +35,8 @@ public class Controller implements Initializable {
     private Stage stageGameOver;
     private GraphicsContext gc;
     private int globosperdidos=30;
-    private int nivel = 1;
     private int contadornivel = 1;
+    private String stringcontadornivel = String.valueOf(contadornivel);
 
     List<Globo> arrayGlobos = new ArrayList<>();
 
@@ -132,7 +132,7 @@ public class Controller implements Initializable {
         vides.setFont(Font.font ("Anson", FontWeight.BOLD, 15));
         vides.setFill(Color.ORANGERED);
         //Nivell
-        nivell.setText("Nivell: "+contadornivel);
+        nivell.setText("Nivell: "+stringcontadornivel);
         nivell.setFont(Font.font ("Anson", FontWeight.BOLD, 15));
         nivell.setFill(Color.INDIANRED);
     }
@@ -148,8 +148,12 @@ public class Controller implements Initializable {
                             if ( globo.isClicked(new Point2D(e.getX(), e.getY()))){
                                 globo.eliminarConClick = true;
                                 contador++;
-                                if (contador % 5 == 0) {
+                                if (contador % 10 == 0) {
                                     contadornivel++;
+                                    stringcontadornivel = String.valueOf(contadornivel);
+                                    if(contadornivel >= 11){
+                                        stringcontadornivel = "MAX";
+                                    }
                                 }
                             }
                         }
