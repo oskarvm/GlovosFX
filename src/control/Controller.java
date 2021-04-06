@@ -13,6 +13,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -31,7 +34,9 @@ public class Controller implements Initializable {
     private Scene sceneGameOver;
     private Stage stageGameOver;
     private GraphicsContext gc;
-    private int globosperdidos=0;
+    private int globosperdidos=30;
+    private int nivel = 1;
+    private int contadornivel = 1;
 
     List<Globo> arrayGlobos = new ArrayList<>();
 
@@ -43,6 +48,10 @@ public class Controller implements Initializable {
 
     @FXML
     Text puntuacio;
+    @FXML
+    Text vides;
+    @FXML
+    Text nivell;
 
     Image image;
     Image image0 = new Image("css/images/globo_blanco_grande.png");
@@ -60,7 +69,7 @@ public class Controller implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             segundos += 0.0037;
-
+            printamientos();
             //CREAR NUEVO GLOBO
             if (segundos>creador_globo){
                 establecer_globo();
@@ -74,9 +83,9 @@ public class Controller implements Initializable {
             //MOVER GLOBOS HACIA ARRIBA
             for (Globo globo: arrayGlobos ){
                 globo.clear(gc);
-                globo.move();
+                globo.move(contadornivel);
                 globo.render(gc);
-                if (globo.getPosY()-1 == 0){
+                if (globo.getPosY()-1 <= 0){
                     globo.eliminarAltura = true;
                 }
             }
@@ -85,7 +94,7 @@ public class Controller implements Initializable {
             for (Globo globo: arrayGlobos ){
                 if (globo.eliminarAltura){
                     globo.clear(gc);
-                    globosperdidos++;
+                    globosperdidos--;
                 }
                 if (globo.eliminarConClick){
                     globo.clear(gc);
@@ -96,7 +105,6 @@ public class Controller implements Initializable {
             for (Globo globo: arrayGlobos ){
                 if (globo.eliminarConClick){
                     globo.clear(gc);
-                    globosperdidos++;
                 }
                 if (globo.eliminarConClick){
                     globo.clear(gc);
@@ -114,6 +122,21 @@ public class Controller implements Initializable {
         }
     }));
 
+    private void printamientos() {
+        //Punts
+        puntuacio.setText("Punts: "+contador);
+        puntuacio.setFont(Font.font ("Anson", FontWeight.BOLD, 15));
+        puntuacio.setFill(Color.MEDIUMVIOLETRED);
+        //Vides
+        vides.setText("Vides: "+globosperdidos);
+        vides.setFont(Font.font ("Anson", FontWeight.BOLD, 15));
+        vides.setFill(Color.ORANGERED);
+        //Nivell
+        nivell.setText("Nivell: "+contadornivel);
+        nivell.setFont(Font.font ("Anson", FontWeight.BOLD, 15));
+        nivell.setFill(Color.INDIANRED);
+    }
+
     private void comprovarSiGloboEsClickado() {
         scene.setOnMouseClicked(
                 new EventHandler<MouseEvent>()
@@ -125,7 +148,9 @@ public class Controller implements Initializable {
                             if ( globo.isClicked(new Point2D(e.getX(), e.getY()))){
                                 globo.eliminarConClick = true;
                                 contador++;
-                                puntuacio.setText("Punts: "+contador);
+                                if (contador % 5 == 0) {
+                                    contadornivel++;
+                                }
                             }
                         }
                     }

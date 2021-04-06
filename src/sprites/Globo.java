@@ -21,13 +21,34 @@ public class Globo extends Sprite {
     }
 
     @Override
-    public void move() {
-        if (level == 3){
+    public void move(int nivelglobos) {
+        if (nivelglobos == 1){
+            velY = 0.2F;
+        }else if(nivelglobos == 2){
+            velY = 0.3F;
+        }else if(nivelglobos == 3){
+            velY = 0.4F;
+        }else if(nivelglobos == 4){
             velY = 0.5F;
-        }else if(level == 5){
-            velY= 2F;
-        }else if(level == 7){
-            velY= 4F;
+        }else if(nivelglobos == 5){
+            velY = 0.6F;
+        }else if(nivelglobos == 6){
+            velY = 0.7F;
+        }
+        else if(nivelglobos == 7){
+            velY = 0.8F;
+        }
+        else if(nivelglobos == 8){
+            velY = 1F;
+        }
+        else if(nivelglobos == 9){
+            velY = 1.2F;
+        }
+        else if(nivelglobos == 10){
+            velY = 1.5F;
+        }
+        else if(nivelglobos >= 11){
+            velY = 2F;
         }
 
         setY(getPosY() - velY);
