@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sprites.Globo;
@@ -39,6 +40,9 @@ public class Controller implements Initializable {
     private int contador = 0;
     @FXML
     Canvas mainCanvas;
+
+    @FXML
+    Text puntuacio;
 
     Image image;
     Image image0 = new Image("css/images/globo_blanco_grande.png");
@@ -104,7 +108,8 @@ public class Controller implements Initializable {
 
             //GAME OVER
 
-            //PRINTAR RESULTAT
+
+
 
         }
     }));
@@ -120,6 +125,7 @@ public class Controller implements Initializable {
                             if ( globo.isClicked(new Point2D(e.getX(), e.getY()))){
                                 globo.eliminarConClick = true;
                                 contador++;
+                                puntuacio.setText("Punts: "+contador);
                             }
                         }
                     }
