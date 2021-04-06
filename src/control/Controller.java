@@ -7,10 +7,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sprites.Globo;
@@ -54,6 +56,30 @@ public class Controller implements Initializable {
         public void handle(ActionEvent event) {
             segundos += 0.0037;
 
+            //CREAR NUEVO GLOBO
+            if (segundos>creador_globo){
+                establecer_globo();
+
+                arrayGlobos.add(new Globo(image));
+                creador_globo+=0.5F;
+            }
+
+            comprovarSiGloboEsClickado();
+            scene.setOnMouseClicked(
+                    new EventHandler<MouseEvent>()
+                    {
+                        public void handle(MouseEvent e)
+                        {
+
+                            for (Globo globo:arrayGlobos){
+                                if ( globo.isClicked(new Point2D(e.getX(), e.getY()))){
+                                    globo.eliminarConClick = true;
+                                }
+                            }
+                        }
+                    });
+
+            //MOVER GLOBOS HACIA ARRIBA
             for (Globo globo: arrayGlobos ){
                 globo.clear(gc);
                 globo.move();
@@ -63,17 +89,20 @@ public class Controller implements Initializable {
                 }
             }
 
-
-            //CREAR NUEVO GLOBO
-            if (segundos>creador_globo){
-                establecer_globo();
-
-                arrayGlobos.add(new Globo(image));
-                creador_globo+=0.5F;
-            }
-            //ELIMINAR GLOBOS (TRUE)
+            //DEJAR DE PRINTAR GLOBOS ALTURA (TRUE)
             for (Globo globo: arrayGlobos ){
                 if (globo.eliminarAltura){
+                    globo.clear(gc);
+                    globosperdidos++;
+                }
+                if (globo.eliminarConClick){
+                    globo.clear(gc);
+                }
+            }
+
+            //DEJAR DE PRINTAR GLOBOS CON CLICK (TRUE)
+            for (Globo globo: arrayGlobos ){
+                if (globo.eliminarConClick){
                     globo.clear(gc);
                     globosperdidos++;
                 }
@@ -103,6 +132,10 @@ public class Controller implements Initializable {
             }
         }
     }));
+
+    private void comprovarSiGloboEsClickado() {
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
