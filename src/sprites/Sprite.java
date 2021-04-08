@@ -9,10 +9,6 @@ public abstract class Sprite {
     private Image image;
     private double width, height, posX, posY;
 
-    public void move() {
-        return;
-    }
-
     public Sprite(Image image) {
         setImage(image);
     }
@@ -46,8 +42,7 @@ public abstract class Sprite {
     }
 
     public boolean isClicked(Point2D p) {
-        if(getBoundary().contains(p)) return true;
-        else return false;
+        return getBoundary().contains(p);
     }
 
     public abstract void move(int nivelglobos);

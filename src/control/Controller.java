@@ -8,11 +8,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -20,7 +20,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sprites.Globo;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,8 +30,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     private Scene scene;
     private Stage stage;
-    private Scene sceneGameOver;
-    private Stage stageGameOver;
+    private Parent root;
     private GraphicsContext gc;
     private int globosperdidos=30;
     private int contadornivel = 1;
@@ -42,10 +40,9 @@ public class Controller implements Initializable {
 
     private float segundos = 0;
     private float creador_globo = 5;
-    private int contador = 0;
+    public static int contador = 0;
     @FXML
     Canvas mainCanvas;
-
     @FXML
     Text puntuacio;
     @FXML
@@ -65,7 +62,7 @@ public class Controller implements Initializable {
     Image image8 = new Image("css/images/globo_rojo_grande.png");
     Image image9 = new Image("css/images/globo_negro_grande.png");
 
-    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.0037), new EventHandler<ActionEvent>(){
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.0037), new EventHandler<>(){
         @Override
         public void handle(ActionEvent event) {
             segundos += 0.0037;
@@ -115,10 +112,19 @@ public class Controller implements Initializable {
             arrayGlobos.removeIf(globo -> globo.eliminarConClick);
 
             //GAME OVER
-
-
-
-
+            if (globosperdidos == 0){
+                //TODO:navegar al game over
+                try {
+                    root = FXMLLoader.load(getClass().getResource("../sample/gameover.fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add("css/gameovercss.css");
+                stage.setTitle("Game Over");
+                stage.setScene(scene);
+                stage.show();
+            }
         }
     }));
 
@@ -139,21 +145,17 @@ public class Controller implements Initializable {
 
     private void comprovarSiGloboEsClickado() {
         scene.setOnMouseClicked(
-                new EventHandler<MouseEvent>()
-                {
-                    public void handle(MouseEvent e)
-                    {
+                e -> {
 
-                        for (Globo globo:arrayGlobos){
-                            if ( globo.isClicked(new Point2D(e.getX(), e.getY()))){
-                                globo.eliminarConClick = true;
-                                contador++;
-                                if (contador % 10 == 0) {
-                                    contadornivel++;
-                                    stringcontadornivel = String.valueOf(contadornivel);
-                                    if(contadornivel >= 11){
-                                        stringcontadornivel = "MAX";
-                                    }
+                    for (Globo globo:arrayGlobos){
+                        if ( globo.isClicked(new Point2D(e.getX(), e.getY()))){
+                            globo.eliminarConClick = true;
+                            contador++;
+                            if (contador % 10 == 0) {
+                                contadornivel++;
+                                stringcontadornivel = String.valueOf(contadornivel);
+                                if(contadornivel >= 11){
+                                    stringcontadornivel = "MAX";
                                 }
                             }
                         }
@@ -184,7 +186,7 @@ public class Controller implements Initializable {
 
     private void establecer_globo() {
         Random random = new Random();
-        int color = random.nextInt(8);
+        int color = random.nextInt(10);
 
         if (color == 0) {
             image = image0;
@@ -207,7 +209,6 @@ public class Controller implements Initializable {
         } else {
             image = image9;
         }
+
     }
-
-
 }
